@@ -1,0 +1,22 @@
+Name,Field Type,Description,Possible Values
+Description Number,text,Unique identifier for each job description text.,5-digit number with leading zeroes. Lowest number is 00001.
+Position Title,text,Job title of the position.,
+Multifunctional Responsibilities,text,Whether the position is only one job or a combination of two or more jobs.,"Yes, No"
+Entry Type,text,Type of entry in terms of whether the position description is recruiting new applicants or not.,"3 Options: {job advertisement, internal position description, not listed}"
+Position Date,integer,Year that the position description was posted or created.,4-digit year in format YYYY; NA
+Functional Area,text,Main area of function associated with the position.,"11 Options: {accounting, acquisitions, administration, design and production, it, manuscript editorial, marketing, operations, rights and permissions, sales, other}"
+Product Area,text,Main product type associated with the position.,"3 Options: {books, journals, books & journals}; Or, short text description if other"
+Decision-Making Authority,text,Level of decision-making authority classified from Tier 0 (representing top position in the organization) to Tier 5 (clerical positions). Considers how critical the position is and how serious the result would usually be if the employee made a mistake that was not readily correctable. ,"6 Options: {Tier 0, Tier 1, Tier 2, Tier 3, Tier 4, Tier 5}"
+Years of Experience,float,Minimum number of years of experience required for the position.,"Integer (e.g., 1, 4, 15) or decimal (e.g., 0.5, 1.5); NA"
+Education Credentials,text,Minimum level of education required for the position.,"6 Options: {High School Graduate or Certificate of Equivalency, Associate Degree, Bachelor’s Degree, Master’s Degree, Doctoral or Professional Degree, Not listed}"
+Employment Type,text,"Type of employment, in terms of hours of work.","4 Options: {full-time, part-time, contract, not listed}; NA"
+Employment Location,text,"Employment location, in terms of whether work is conducted in-person or not.","4 Options: {Onsite, Hybrid, Remote, Not Listed}; NA"
+Geographic Location,text,Country of geographic location for hybrid or onsite position. ,"Single country name (e.g., us, netherlands, singapore), or multiple country names separated by a semi-colon (e.g., us; uk; germany); not listed; NA"
+Work Attribute Question,text,Question presented to coders to indicate importance of each work attribute to the position.,"118 Options (for list, refer to the Work Attributes Key)"
+Work Attribute Category,text,"High-level category of work attribute, based on O*NET questionnaires (e.g., Work Skills, Work Context).","5 Options: {Activity, Context, Knowledge Area, Skill, Style}"
+General Work Attribute,text,Work attribute described at a general level.,"30 Options (for list, refer to the Work Attributes Key)"
+Specific Work Attribute,text,Work attribute described at a specific level.,"118 Options (for list, refer to the Work Attributes Key)"
+General Work Attribute Label,text,Label combining Work Attribute Category and General Work Attribute.,Format: [Work Attribute Category] | [General Work Attribute]
+Specific Work Attribute Label,text,"Label combining Work Attribute Category, General Work Attribute, and Specific Work Attribute.",Format: [Work Attribute Category] | [General Work Attribute] | [Specific Work Attribute]
+Rating Value,integer,Rating of how important each Work Attribute is to the position. Numerical representation centered on zero.,"3 Options: {-1, 0, 1}; NA"
+Rating Label,text,Rating of how important each Work Attribute is to the position. Categorical representation using labels.,"3 Options: {Not Applicable / Not Important, Important, Very Important}; NA"
