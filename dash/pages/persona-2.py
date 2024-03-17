@@ -10,59 +10,84 @@ unique_decision_making_authorities = functions.get_unique_decision_making_author
 unique_work_attribute_categories = functions.get_unique_work_attribute_categories()
 
 layout = html.Div(
-    [
-        html.H2(children="Skills Map Dashboard", style={"textAlign": "center"}),
-        html.Div(
-            className="selector-container",
+    className="whole-page",
+    children=[
+        html.Header(
+            className="header-all-persona", id="all-persona",
             children=[
-                html.Div(
-                    className="selector",
+                html.Nav(
+                    className="nav-panel",
                     children=[
-                        html.Label(["Functional Area"]),
-                        dcc.Dropdown(
-                            id="functional-areas",
-                            className="drop-down",
-                            options=unique_functional_areas,
-                            value=unique_functional_areas[0],
+                        html.A(
+                            className="home-icon",
+                            href="/",
+                            children=[html.Img(src="./assets/home.png"), html.Span("Home")],
                         ),
-                    ],
-                ),
-                html.Div(
-                    className="selector",
-                    children=[
-                        html.Label(["Decision Making Authority"]),
-                        dcc.Dropdown(
-                            id="decision-making-authorities",
-                            className="drop-down",
-                            options=unique_decision_making_authorities,
-                            value=unique_decision_making_authorities[0],
-                        ),
-                    ],
-                ),
-                html.Div(
-                    className="selector",
-                    children=[
-                        html.Label(["Work Attribute Categories"]),
-                        dcc.Dropdown(
-                            id="work-attribute-categories",
-                            className="drop-down",
-                            options=unique_work_attribute_categories,
-                            value=unique_work_attribute_categories[0],
-                        ),
+                        html.H1(className="heading-for-all-persona", children="Skills Map Dashboard"),
                     ],
                 ),
             ],
         ),
-        html.Iframe(id="iframe", srcDoc="", width="100%", height="530px"),
-    ]
+        html.Main(
+            className="main-selector",
+            children=[
+                html.Div(
+                    children=[
+                        html.Div(
+                            className="selector",
+                            children=[
+                                html.Label(["Functional Area"]),
+                                dcc.Dropdown(
+                                    id="functional-areas",
+                                    className="drop-down",
+                                    options=unique_functional_areas,
+                                    value=unique_functional_areas[0],
+                                ),
+                            ],
+                        ),
+                        html.Div(
+                            className="selector",
+                            children=[
+                                html.Label(["Decision Making Authority"]),
+                                dcc.Dropdown(
+                                    id="decision-making-authorities",
+                                    className="drop-down",
+                                    options=unique_decision_making_authorities,
+                                    value=unique_decision_making_authorities[0],
+                                ),
+                            ],
+                        ),
+                        html.Div(
+                            className="selector",
+                            children=[
+                                html.Label(["Work Attribute Categories"]),
+                                dcc.Dropdown(
+                                    id="work-attribute-categories",
+                                    className="drop-down",
+                                    options=unique_work_attribute_categories,
+                                    value=unique_work_attribute_categories[0],
+                                ),
+                            ],
+                        ),
+                    ],
+                ),
+                html.Div(
+                    className="iframe-selector",
+                    children=[
+                        html.Label(["Skills Should Have"]),
+                html.Iframe(id="iframe", srcDoc=""),
+                ])
+            ],
+        ),
+    ],
 )
 
 
 @callback(
     Output(component_id="iframe", component_property="srcDoc"),
-    Input("functional-areas", "value"),
-    Input("decision-making-authorities", "value"),
-    Input("work-attribute-categories", "value"),
+    Input(component_id="functional-areas", component_property="value"),
+    Input(component_id="decision-making-authorities", component_property="value"),
+    Input(component_id="work-attribute-categories", component_property="value"),
 )
 def update_graph(functional_area, decision_making_authority, work_attribute_category):
 

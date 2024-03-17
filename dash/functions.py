@@ -44,21 +44,21 @@ def get_unique_work_attribute_categories():
 
     df = get_data()
 
-    return df["Work Attribute Category"].drop_duplicates().sort_values(ascending=False)
+    return df["Work Attribute Category"].drop_duplicates().sort_values(ascending=False).tolist()
 
 
 def get_unique_decision_making_authorities():
 
     df = get_data()
 
-    return df["Decision-Making Authority"].drop_duplicates().sort_values(ascending=False)
+    return df["Decision-Making Authority"].drop_duplicates().sort_values(ascending=False).tolist()
 
 
 def get_unique_functional_areas():
 
     df = get_data()
 
-    return df["Functional Area"].drop_duplicates().sort_values(ascending=False)
+    return df["Functional Area"].drop_duplicates().sort_values(ascending=False).tolist()
 
 
 def get_network_data(functional_area, decision_making_authority, work_attribute_category):
