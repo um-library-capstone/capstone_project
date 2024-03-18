@@ -13,7 +13,8 @@ layout = html.Div(
     className="whole-page",
     children=[
         html.Header(
-            className="header-all-persona", id="all-persona",
+            className="header-all-persona",
+            id="all-persona",
             children=[
                 html.Nav(
                     className="nav-panel",
@@ -69,14 +70,27 @@ layout = html.Div(
                                 ),
                             ],
                         ),
+                        html.Div(
+                            className="selector",
+                            id="p-selector",
+                            children=[
+                                html.P(
+                                    [
+                                    '''The size of the circle indicates the importance of each work attribute category. 
+                                    The bigger circles have higher importance for the given functional area and the given tier level.'''
+                                    ]
+                                )
+                            ],
+                        ),
                     ],
                 ),
                 html.Div(
                     className="iframe-selector",
                     children=[
-                        html.Label(["Skills Should Have"]),
-                html.Iframe(id="iframe", srcDoc=""),
-                ])
+                        html.Label(["Skills You Should Have"]),
+                        html.Iframe(id="iframe", srcDoc=""),
+                    ],
+                ),
             ],
         ),
     ],
@@ -119,7 +133,7 @@ def update_graph(functional_area, decision_making_authority, work_attribute_cate
         d3.node_properties.get(target)["edge_color"] = "#00274C"
 
     tree_html = d3.show(
-        filepath=None, figsize=(1024, 450), save_button=False, margin={"left": 200, "top": 10, "right": 0, "bottom": 0}
+        filepath=None, figsize=(1024, 550), save_button=False, margin={"left": 200, "top": 10, "right": 0, "bottom": 0}
     )
 
     return tree_html

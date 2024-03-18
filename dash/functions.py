@@ -60,6 +60,12 @@ def get_unique_functional_areas():
 
     return df["Functional Area"].drop_duplicates().sort_values(ascending=False).tolist()
 
+def get_unique_special_work_attributes(): 
+
+    df = get_data()
+
+    return df["Specific Work Attribute"].drop_duplicates().sort_values(ascending = True)
+
 
 def get_network_data(functional_area, decision_making_authority, work_attribute_category):
 
@@ -113,8 +119,12 @@ def get_network_data(functional_area, decision_making_authority, work_attribute_
 
     df = df.loc[df["weight"] != 0]
 
-    df["weight"] = df["weight"] * 5
+    df["weight"] = (df["weight"] + .5) * 5
 
     df = df.reset_index(drop=True)
 
+    df = df.groupby(['source'], sort=False).apply(lambda x: x.sort_values(['weight'], ascending=False))
+
+    df = df.reset_index(drop=True)
+    
     return df

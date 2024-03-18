@@ -52,7 +52,7 @@ header#home-header {
 #iframe {
     border: none;
     width: 100%;
-    height:530px;
+    height:675px;
     border-left: solid 10px black;
 }
 
@@ -118,4 +118,25 @@ nav{
     grid-column-end: 4;
     justify-self:center;
     /* text-align: center; */
+}
+
+#p-selector{
+    color:gray;
+    text-align: left;
+}
+
+#iframe-one {
+    border: none;
+    width: 100%;
+    height:675px;
+    border-left: solid 10px black;
+    grid-row-start: 2;
+    grid-row-end: 3;
+}
+
+.iframe-one-selector{
+    width: 95%;
+    height:675px;
+    text-align: center;
+    display: grid;
 }
