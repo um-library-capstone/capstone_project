@@ -1,5 +1,4 @@
-from dash import html, dcc, __version__, register_page, callback, Input, Output, State
-from dash.exceptions import PreventUpdate
+from dash import html, dcc, __version__, register_page
 
 register_page(__name__, path="/")
 
@@ -9,7 +8,7 @@ layout = html.Div(
             id="home-header",
             children=[
                 dcc.Location(id="main-url", refresh=True),
-                html.H1(children="Skills Map Dashboard"),
+                html.H1(children="Scholarly Publishing Career Exploration Tool"),
             ],
         ),
         html.Div(
@@ -20,38 +19,73 @@ layout = html.Div(
                     id="home-page",
                     children=[
                         html.Div(
-                            className='Label-container', id='label-container-id',
+                            className="Label-container",
+                            id="label-container-id",
                             children=[
                                 html.Label(
                                     className="home-page-label",
                                     children=["What would you like to do today?"],
                                 ),
-                            ]
+                            ],
                         ),
-                        dcc.RadioItems(
-                            id="career-options",
-                            options={
-                                "persona-1": "Explore new career options based on my current skills",
-                                "persona-2": "Identify necessary skills for the career I want to enter",
-                                "persona-3": "Explore career advancement opportunities",
-                            },
+                        # Card Container
+                        html.Div(
+                            className="card-container",
+                            id="card=container-id",
+                            children=[
+                                # Card 1
+                                html.Div(
+                                    [
+                                        html.A(
+                                            href="persona-1",
+                                            children=[
+                                                html.Img(src="./assets/career_icon.jpg", alt="Explore Careers"),
+                                                html.H2("Explore Career Options"),
+                                                html.P(
+                                                    "Discover which job categories you are best suited for based on your current skills!"
+                                                ),
+                                            ],
+                                        )
+                                    ],
+                                    className="card",
+                                ),
+                                # Card 2
+                                html.Div(
+                                    [
+                                        html.A(
+                                            href="persona-2",
+                                            children=[
+                                                html.Img(src="./assets/skills_photo.jpg", alt="Identify Skills"),
+                                                html.H2("Explore Skill Sets"),
+                                                html.P(
+                                                    "Discover which skills you should develop and highlight based on your field of interest!"
+                                                ),
+                                            ],
+                                        )
+                                    ],
+                                    className="card",
+                                ),
+                                # Card 3
+                                html.Div(
+                                    [
+                                        html.A(
+                                            href="persona-3",
+                                            children=[
+                                                html.Img(src="./assets/advancement_icon.jpg", alt="Career Advancement"),
+                                                html.H2("Explore Career Advancement"),
+                                                html.P(
+                                                    "Find out what skills you should develop to advance your career and find out about other fields that might be a fit!"
+                                                ),
+                                            ],
+                                        )
+                                    ],
+                                    className="card",
+                                ),
+                            ],
                         ),
-                        html.Button(id="button", children="Explore", n_clicks=0),
                     ],
                 ),
             ],
         ),
     ]
 )
-
-
-@callback(
-    Output(component_id="main-url", component_property="pathname"),
-    Input(component_id="button", component_property="n_clicks"),
-    State(component_id="career-options", component_property="value"),
-    prevent_initial_call=True,
-)
-def update_page(n_clicks, selected_option):
-    if selected_option is None:
-        raise PreventUpdate
-    return selected_option

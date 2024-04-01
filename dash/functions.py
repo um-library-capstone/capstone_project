@@ -1,5 +1,10 @@
 import pandas as pd
 
+def read_data():
+    df = pd.read_csv("./data/PJDD_CodingData_Clean_Anon_Long_CatNum.csv")
+
+    return df
+
 def get_data():
 
     df = pd.read_csv("./data/PJDD_CodingData_Clean_Anon_Long_CatNum.csv")

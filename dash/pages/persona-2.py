@@ -1,5 +1,4 @@
 from dash import html, dcc, callback, Output, Input, __version__, register_page
-import plotly.express as px
 import functions
 from d3blocks import D3Blocks
 
@@ -82,6 +81,14 @@ layout = html.Div(
                                 )
                             ],
                         ),
+                        html.Div(
+                            className="selector",
+                            id="skill-selector-1",
+                        ),
+                        html.Div(
+                            className="selector",
+                            id="skill-selector-2",
+                        ),
                     ],
                 ),
                 html.Div(
@@ -95,6 +102,33 @@ layout = html.Div(
         ),
     ],
 )
+
+@callback(
+Output(component_id="skill-selector-1", component_property="children"),
+Output(component_id="skill-selector-2", component_property="children"),
+Input(component_id="functional-areas", component_property="value"),
+Input(component_id="decision-making-authorities", component_property="value"),
+Input(component_id="work-attribute-categories", component_property="value"),
+)
+def update_summary_field(functional_area, decision_making_authority, work_attribute_category):
+
+    df = functions.get_network_data(
+        functional_area=functional_area,
+        decision_making_authority=decision_making_authority,
+        work_attribute_category=work_attribute_category,
+    )
+    top_5 = df.sort_values(by="weight", ascending=False).iloc[:5]
+
+    skills = []
+    for index, source, target, weight in top_5.to_records():
+        if "➤ " not in target:
+            output_target = html.Li(target)
+            if output_target not in skills:
+                skills.append(output_target)
+
+    output = f"Within the functional area ({functional_area}), in decision making authority ({decision_making_authority}) for work attribute category ({work_attribute_category}), the top {len(skills)} skills you would need are listed below:"
+    
+    return output, skills
 
 
 @callback(

@@ -79,7 +79,6 @@ layout = html.Div(
                                 html.Div(id="top-functional-areas-output", style={"textAlign": "center"}),
                             ],
                         ),
-                        # html.Iframe(id="iframe-one", srcDoc="", width="100%", height="400px"),
                     ],
                 ),
                 html.Div(
