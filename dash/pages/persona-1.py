@@ -146,8 +146,8 @@ def update_dataframe_with_ratings(n_clicks, selected_skills):
         save_button=False,
         zoom="mouseover",
         speed=1500,
-        border={'color': 'white', 'width': 1.5, 'fill': 'white', "padding": 10},
-        font = {'size': 20, "type": "sans-serif", 'color': "black", 'outlinecolor': 'none'},
+        border={'color': '#74d7ca', 'width': 1.5, 'fill': '#74d7ca', "padding": 10},
+        font = {'size': 20, "type": "sans-serif", 'color': "black", 'outlinecolor': 'none', 'wrapwidth': 100},
         figsize = [1000, 1700],
     )
 

@@ -101,7 +101,7 @@ layout = html.Div(
                 html.Div(
                     className="iframe-selector",
                     children=[
-                        html.Label(["Skills You Should develop and highlight and develop"]),
+                        html.Label(["Skills you should develop:"]),
                         html.Iframe(id="iframe", srcDoc=""),
                     ],
                 ),
