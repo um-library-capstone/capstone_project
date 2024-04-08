@@ -23,7 +23,9 @@ layout = html.Div(
                             href="/",
                             children=[html.Img(src="./assets/home.png"), html.Span("Home")],
                         ),
-                        html.H1(className="heading-for-all-persona", children="Skills Map Dashboard"),
+                        html.H1(
+                            className="heading-for-all-persona", children="Scholarly Publishing Career Exploration Tool"
+                        ),
                     ],
                 ),
             ],
@@ -32,69 +34,74 @@ layout = html.Div(
             className="main-selector",
             children=[
                 html.Div(
-                    children=[
+                    [
+                        html.H2(children="Explore Skill Sets", style={"textAlign": "center"}),
                         html.Div(
-                            className="selector",
                             children=[
-                                html.Label(["Functional Area"]),
-                                dcc.Dropdown(
-                                    id="functional-areas",
-                                    className="drop-down",
-                                    options=unique_functional_areas,
-                                    value=unique_functional_areas[0],
+                                html.Div(
+                                    className="selector",
+                                    children=[
+                                        html.Label(["Career Area"]),
+                                        dcc.Dropdown(
+                                            id="functional-areas",
+                                            className="drop-down",
+                                            options=unique_functional_areas,
+                                            value=unique_functional_areas[0],
+                                        ),
+                                    ],
+                                ),
+                                html.Div(
+                                    className="selector",
+                                    children=[
+                                        html.Label(["Position Level"]),
+                                        dcc.Dropdown(
+                                            id="decision-making-authorities",
+                                            className="drop-down",
+                                            options=unique_decision_making_authorities,
+                                            value=unique_decision_making_authorities[0],
+                                        ),
+                                    ],
+                                ),
+                                html.Div(
+                                    className="selector",
+                                    children=[
+                                        html.Label(["Skill Category"]),
+                                        dcc.Dropdown(
+                                            id="work-attribute-categories",
+                                            className="drop-down",
+                                            options=unique_work_attribute_categories,
+                                            value=unique_work_attribute_categories[0],
+                                        ),
+                                    ],
+                                ),
+                                html.Div(
+                                    className="selector",
+                                    id="p-selector",
+                                    children=[
+                                        html.P(
+                                            [
+                                                """The size of the circle indicates the importance of each skill category. 
+                                    The bigger circles have higher importance for the given career area and the given position level."""
+                                            ]
+                                        )
+                                    ],
+                                ),
+                                html.Div(
+                                    className="selector",
+                                    id="skill-selector-1",
+                                ),
+                                html.Div(
+                                    className="selector",
+                                    id="skill-selector-2",
                                 ),
                             ],
-                        ),
-                        html.Div(
-                            className="selector",
-                            children=[
-                                html.Label(["Decision Making Authority"]),
-                                dcc.Dropdown(
-                                    id="decision-making-authorities",
-                                    className="drop-down",
-                                    options=unique_decision_making_authorities,
-                                    value=unique_decision_making_authorities[0],
-                                ),
-                            ],
-                        ),
-                        html.Div(
-                            className="selector",
-                            children=[
-                                html.Label(["Work Attribute Categories"]),
-                                dcc.Dropdown(
-                                    id="work-attribute-categories",
-                                    className="drop-down",
-                                    options=unique_work_attribute_categories,
-                                    value=unique_work_attribute_categories[0],
-                                ),
-                            ],
-                        ),
-                        html.Div(
-                            className="selector",
-                            id="p-selector",
-                            children=[
-                                html.P(
-                                    [
-                                    '''The size of the circle indicates the importance of each work attribute category. 
-                                    The bigger circles have higher importance for the given functional area and the given tier level.'''
-                                    ]
-                                )
-                            ],
-                        ),
-                        html.Div(
-                            className="selector",
-                            id="skill-selector-1",
-                        ),
-                        html.Div(
-                            className="selector",
-                            id="skill-selector-2",
                         ),
                     ],
                 ),
                 html.Div(
                     className="iframe-selector",
                     children=[
-                        html.Label(["Skills You Should Have"]),
+                        html.Label(["Skills You Should develop and highlight and develop"]),
                         html.Iframe(id="iframe", srcDoc=""),
                     ],
                 ),
@@ -103,12 +110,13 @@ layout = html.Div(
     ],
 )
 
+
 @callback(
-Output(component_id="skill-selector-1", component_property="children"),
-Output(component_id="skill-selector-2", component_property="children"),
-Input(component_id="functional-areas", component_property="value"),
-Input(component_id="decision-making-authorities", component_property="value"),
-Input(component_id="work-attribute-categories", component_property="value"),
+    Output(component_id="skill-selector-1", component_property="children"),
+    Output(component_id="skill-selector-2", component_property="children"),
+    Input(component_id="functional-areas", component_property="value"),
+    Input(component_id="decision-making-authorities", component_property="value"),
+    Input(component_id="work-attribute-categories", component_property="value"),
 )
 def update_summary_field(functional_area, decision_making_authority, work_attribute_category):
 
@@ -126,8 +134,8 @@ def update_summary_field(functional_area, decision_making_authority, work_attrib
             if output_target not in skills:
                 skills.append(output_target)
 
-    output = f"Within the functional area ({functional_area}), in decision making authority ({decision_making_authority}) for work attribute category ({work_attribute_category}), the top {len(skills)} skills you would need are listed below:"
-    
+    output = f"Within the career area ({functional_area}), in position level ({decision_making_authority}) for skill category ({work_attribute_category}), the top {len(skills)} skills you would need are listed below:"
+
     return output, skills
 
 
@@ -159,12 +167,12 @@ def update_graph(functional_area, decision_making_authority, work_attribute_cate
 
     d3.set_edge_properties(df)
 
-    d3.node_properties.get(work_attribute_category)["color"] = "red"
+    d3.node_properties.get(work_attribute_category)["color"] = "#3B71FB"
 
     for index, source, target, weight in df.to_records():
         d3.node_properties.get(target)["size"] = weight
-        d3.node_properties.get(target)["color"] = "#FFCB05"
-        d3.node_properties.get(target)["edge_color"] = "#00274C"
+        d3.node_properties.get(target)["color"] = "#3B71FB"
+        # d3.node_properties.get(target)["edge_color"] = "#FFCB05"
 
     tree_html = d3.show(
         filepath=None, figsize=(1024, 550), save_button=False, margin={"left": 200, "top": 10, "right": 0, "bottom": 0}

@@ -32,7 +32,8 @@ div.page-container {
 header#home-header {
     display: flex;
     flex-direction: row;
-    border-bottom: solid rgb(0, 0, 0) 3px;
+    border-bottom: solid #292828 1px;
+    border-top: solid #292828 1px;
     justify-content: center;
 }
 
@@ -52,84 +53,92 @@ header#home-header {
 #iframe {
     border: none;
     width: 100%;
-    height:675px;
-    border-left: solid 10px black;
+    height: 675px;
+    /* border-left: solid 10px black; */
 }
 
-.iframe-selector{
+.iframe-selector {
     width: 100%;
     text-align: center;
 }
 
-nav{
+nav {
     display: grid;
     grid-template-columns: 3% 20% 75%;
 }
 
-.main-selector{
+.main-selector {
     display: grid;
     grid-template-columns: 30% 70%;
     justify-items: start;
     align-items: start;
 }
 
-.persona-text{
+.persona-text {
     grid-column-start: 2;
     grid-column-end: 3;
-    justify-self:center;
+    justify-self: center;
 }
 
-#all-persona.header-all-persona{
+#all-persona.header-all-persona {
     border-bottom: 3px solid black;
     margin-bottom: 20px;
 }
 
-.home-page-container{
+.home-page-container {
     display: flex;
     flex-direction: column;
-    background-color: #d3d3d3;
+    /* background-color: #d3d3d3; */
     padding: 20px;
     align-items: end;
+    border-radius: 20px;
 }
 
-#label-container-id{
+#label-container-id {
     display: inline-block;
-    align-self:center;
-    font-size: 1.5em;
+    align-self: center;
+    font-size: 1.72em;
     font-weight: bold;
+    color: black;
+    /* background-color: yellow; */
+    border: solid 1px black;
+    padding: 30px 115px 30px 115px;
+    border-radius: 5px;
 }
 
-#career-options{
+#career-options {
     text-align: left;
     padding: 10px;
-    margin:10px;
+    margin: 10px;
     font-size: 1.5em;
 }
 
-.home-page-container #button{
+.home-page-container #button {
     padding: 5px;
     width: 20%;
     font-size: 1.05em;
     font-weight: bold;
 }
 
-.heading-for-all-persona{
+.heading-for-all-persona {
     grid-column-start: 3;
     grid-column-end: 4;
-    justify-self:center;
+    justify-self: center;
     /* text-align: center; */
 }
 
-#p-selector, #skill-selector-1, #skill-selector-2{
+#p-selector,
+#skill-selector-1,
+#skill-selector-2 {
     text-align: left;
 }
 
-#p-selector{
+#p-selector {
     color: gray;
     font-size: small;
 }
 
-#skill-selector-2{
+#skill-selector-2 {
     color: gray;
 }
 
@@ -137,15 +146,15 @@ nav{
 #iframe-one {
     border: none;
     width: 100%;
-    height:675px;
-    border-left: solid 10px black;
+    height: 700px;
+    /* border-left: solid 10px black; */
     grid-row-start: 2;
     grid-row-end: 3;
 }
 
-.iframe-one-selector{
-    width: 95%;
-    height:675px;
+.iframe-one-selector {
+    width: 100%;
+    height: 700px;
     text-align: center;
     display: grid;
 }
@@ -153,16 +162,23 @@ nav{
 /* new style */
 .functional-areas-container {
     display: grid;
-    grid-template-columns: repeat(4, 1fr); /* Creates 4 columns */
-    gap: 20px; /*Adds some space between columns*/
-    padding: 20px; /*Optional: Adds some padding around the grid*/
+    grid-template-columns: repeat(4, 1fr);
+    /* Creates 4 columns */
+    gap: 20px;
+    /*Adds some space between columns*/
+    padding: 20px;
+    /*Optional: Adds some padding around the grid*/
 }
 
-.functional-area-column { 
-    background: #f7f7f7; /*Optional: Adds a background color to each column*/
-    border: 1px solid #e1e1e1; /*Optional: Adds a border to each column*/
-    padding: 20px; /*Optional: Adds some padding inside each column*/
-    border-radius: 8px; /*Optional: Rounds the corners of each column*/
+.functional-area-column {
+    background: #f7f7f7;
+    /*Optional: Adds a background color to each column*/
+    border: 1px solid #e1e1e1;
+    /*Optional: Adds a border to each column*/
+    padding: 20px;
+    /*Optional: Adds some padding inside each column*/
+    border-radius: 8px;
+    /*Optional: Rounds the corners of each column*/
 }
 
 /*Skills Table from Persona 3*/
@@ -172,7 +188,7 @@ nav{
     padding: 15px;
     border: 1px solid #ddd;
     border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     background-color: white;
 }
 
@@ -188,7 +204,8 @@ nav{
     border-collapse: collapse;
 }
 
-.skills-table-container th, .skills-table-container td {
+.skills-table-container th,
+.skills-table-container td {
     border: 1px solid #ddd;
     padding: 8px;
     text-align: left;
@@ -215,11 +232,18 @@ nav{
     border: 1px solid #ccc;
     border-radius: 8px;
     text-align: center;
+    box-shadow: 0px 5px 9px 4px #A3A09F;
+    transition: all .3s ease-in-out;
 }
 
 .card img {
     width: 100%;
     border-radius: 8px;
+}
+
+.card:hover {
+    transform: scale(1.03);
+    box-shadow: 10px 5px 9px 4px #767473;
 }
 
 .card h2 {
@@ -233,6 +257,48 @@ nav{
 }
 
 a {
-    text-decoration: none; /*Remove the underline from links*/
-    color: black; /*  Make texts black */
+    text-decoration: none;
+    /*Remove the underline from links*/
+    color: black;
+    /*  Make texts black */
+}
+
+#card-1 {
+    background-color: #9ABFED;
+    border:2px solid #3766E2;
+}
+
+#card-2 {
+    background-color: #A7C0FF;
+    border:2px solid #3766E2;
+}
+
+#card-3 {
+    background-color: White;
+    border:2px solid #3766E2;
+}
+
+div#card-1 p,
+div#card-1 a,
+div#card-2 p,
+div#card-2 a,
+div#card-3 p,
+div#card-3 a {
+    /* color: white; */
+    margin-bottom: 100px;
+    font-size: 1.05em;
+}
+
+#submit-ratings {
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    background-color: #134AAE;
+    color: white;
+}
+
+.functional-area-out {
+    border: grey 1px solid;
+    padding-bottom: 20px;
+    background-color: #ddd;
 }

@@ -3,15 +3,39 @@ import pandas as pd
 def read_data():
     df = pd.read_csv("./data/PJDD_CodingData_Clean_Anon_Long_CatNum.csv")
 
+    tier_map = {
+    'Tier 5': 'Entry Level',
+    'Tier 4': 'Early Career',
+    'Tier 3': 'Management',
+    'Tier 2': 'Executive Management',
+    'Tier 1': 'Department Head',
+    'Tier 0': 'Senior Executive'
+    }
+
+    df['Decision-Making Authority'] = df['Decision-Making Authority'].map(tier_map)
+
     return df
 
 def get_data():
 
     df = pd.read_csv("./data/PJDD_CodingData_Clean_Anon_Long_CatNum.csv")
 
+    tier_map = {
+    'Tier 5': 'Entry Level',
+    'Tier 4': 'Early Career',
+    'Tier 3': 'Management',
+    'Tier 2': 'Executive Management',
+    'Tier 1': 'Department Head',
+    'Tier 0': 'Senior Executive'
+    }
+
+    df['Decision-Making Authority'] = df['Decision-Making Authority'].map(tier_map)
+
     df = df[
         [
             "Functional Area",
+            "Position Title",
+            "Product Area",
             "Decision-Making Authority",
             "Work Attribute Category",
             "General Work Attribute",
@@ -23,6 +47,8 @@ def get_data():
     df[
         [
             "Functional Area",
+            "Position Title",
+            "Product Area",
             "Decision-Making Authority",
             "Work Attribute Category",
             "General Work Attribute",
@@ -31,6 +57,8 @@ def get_data():
     ] = df[
         [
             "Functional Area",
+            "Position Title",
+            "Product Area",
             "Decision-Making Authority",
             "Work Attribute Category",
             "General Work Attribute",
@@ -44,6 +72,23 @@ def get_data():
 
     return df
 
+def rename_columns():
+    df = get_data()
+    df = df.rename(columns={"Functional Area": "Career Area", 
+                       "Decision-Making Authority": "Position Level", 
+                       "Work Attribute Category": "Skill Category", 
+                       "Specific Work Attribute": "Specific Skill",
+                       "General Work Attribute": "General Skill"})
+    return df
+
+def get_data_for_job_description_table():
+    df = read_data()
+    df = df.rename(columns={"Functional Area": "Career Area", 
+                       "Decision-Making Authority": "Position Level", 
+                       "Work Attribute Category": "Skill Category", 
+                       "Specific Work Attribute": "Specific Skill",
+                       "General Work Attribute": "General Skill"})
+    return df
 
 def get_unique_work_attribute_categories():
 
@@ -70,6 +115,12 @@ def get_unique_special_work_attributes():
     df = get_data()
 
     return df["Specific Work Attribute"].drop_duplicates().sort_values(ascending = True)
+
+def get_unique_position_titles():
+
+    df = get_data()
+
+    return df['Position Title'].drop_duplicates().sort_values(ascending = True)
 
 
 def get_network_data(functional_area, decision_making_authority, work_attribute_category):
@@ -132,4 +183,59 @@ def get_network_data(functional_area, decision_making_authority, work_attribute_
 
     df = df.reset_index(drop=True)
     
+    return df
+
+
+def circle_packing_data(selected_skills):
+
+    print("Selected Skills:", selected_skills)
+
+    df = get_data()
+
+    df = df[(df["Specific Work Attribute"].isin(selected_skills)) & (df["Rating Value"] == 1)]
+
+    df = df.loc[df["Rating Value"].notna()]
+
+    df["Rating Value"] = df["Rating Value"] + 1
+
+    df = df.groupby(["Functional Area", "Position Title", "Product Area", "Specific Work Attribute"])["Rating Value"].agg(["mean"]).reset_index()
+
+    df = df.sort_values(df.columns.tolist())
+
+    df["Position Title"] = df["Position Title"] + "."
+
+    df["Product Area"] = df["Product Area"] + "."
+
+    df["Specific Work Attribute"] = df["Specific Work Attribute"] + "-"
+
+    df_data = df.copy()
+
+    df = df_data.copy()
+
+    df = df.groupby(["Specific Work Attribute", "Functional Area"])["mean"].agg(["sum"]).reset_index()
+
+    df.columns = ["source", "target", "weight"]
+
+    df_level_1 = df.copy()
+
+    df = df_data.copy()
+
+    df = df.groupby(["Functional Area", "Position Title"])["mean"].agg(["sum"]).reset_index()
+
+    df.columns = ["source", "target", "weight"]
+
+    df_level_2 = df.copy()
+
+    df = pd.concat([df_level_1, df_level_2])
+
+    df = df.loc[df["weight"] != 0]
+
+    df["weight"] = (df["weight"] + .5) * 5
+
+    df = df.reset_index(drop=True)
+
+    df = df.groupby(['source'], sort=False).apply(lambda x: x.sort_values(['weight'], ascending=False))
+
+    df = df.reset_index(drop=True)
+
     return df

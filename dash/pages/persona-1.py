@@ -1,5 +1,7 @@
 from dash import html, dcc, callback, Input, Output, register_page, State
 from dash.exceptions import PreventUpdate
+import plotly.express as px
+import re
 import random
 import functions
 from d3blocks import D3Blocks
@@ -10,6 +12,7 @@ unique_functional_areas = functions.get_unique_functional_areas()
 unique_decision_making_authorities = functions.get_unique_decision_making_authorities()
 unique_work_attribute_categories = functions.get_unique_work_attribute_categories()
 unique_specific_attribute_categories = functions.get_unique_special_work_attributes()
+unique_position_titles = functions.get_unique_position_titles()
 
 layout = html.Div(
     className="whole-page",
@@ -26,7 +29,7 @@ layout = html.Div(
                             href="/",
                             children=[html.Img(src="./assets/home.png"), html.Span("Home")],
                         ),
-                        html.H1(className="heading-for-all-persona", children="Skills Map Dashboard"),
+                        html.H1(className="heading-for-all-persona", children="Scholarly Publishing Career Exploration Tool"),
                     ],
                 ),
             ],
@@ -36,19 +39,19 @@ layout = html.Div(
             children=[
                 html.Div(
                     [
-                        html.H2(children="Persona 1", style={"textAlign": "center"}),
+                        html.H2(children="Explore Career Options", style={"textAlign": "center"}),
                         html.Div(
                             className="selector-container",
                             children=[
                                 html.Div(
                                     className="selector",
                                     children=[
-                                        html.Label(["Skills that I have:"]),
+                                        html.Label(["Current Skills:"]),
                                         dcc.Dropdown(
                                             id="specific_skills",
                                             className="drop-down",
                                             options=unique_specific_attribute_categories,
-                                            value=[],
+                                            value=["Achievement/Effort"],
                                             multi=True,
                                         ),
                                     ],
@@ -60,7 +63,7 @@ layout = html.Div(
                             children=[
                                 html.Div(id="rating-section"),
                                 html.Div(  # Wrap the button in a new Div for easier styling
-                                    html.Button("Find my Functional Areas", id="submit-ratings", n_clicks=0),
+                                    html.Button("Explore Career Areas", id="submit-ratings", n_clicks=0),
                                     style={
                                         "textAlign": "center",
                                         "marginTop": "20px",
@@ -73,7 +76,7 @@ layout = html.Div(
                             className="functional-area-out",
                             children=[
                                 html.H3(
-                                    "Your Functional Areas to Explore:",
+                                    "Career Areas to Explore:",
                                     style={"textAlign": "center", "marginBottom": "20px"},
                                 ),
                                 html.Div(id="top-functional-areas-output", style={"textAlign": "center"}),
@@ -84,8 +87,8 @@ layout = html.Div(
                 html.Div(
                     className="iframe-one-selector",
                     children=[
-                        html.Label(["Areas You Should Explore"]),
-                        html.Iframe(id="iframe-one", srcDoc="",),
+                        html.Label(["Career Areas You Should Explore"]),
+                        html.Iframe(id="iframe-one", srcDoc=""),
                     ],
                 ),
             ],
@@ -105,7 +108,8 @@ def limit_skills_selection(selected_skills):
 
 @callback(Output("ratings-store", "data"), Input("submit-ratings", "n_clicks"), State("specific_skills", "value"))
 def store_ratings(n_clicks, selected_skills):
-    if n_clicks is None or n_clicks < 1:
+    n_clicks = 1
+    if n_clicks is None:
         raise PreventUpdate
     return selected_skills
 
@@ -124,36 +128,29 @@ def update_dataframe_with_ratings(n_clicks, selected_skills):
 
     filtered_df = df[(df["Specific Work Attribute"].isin(selected_skills)) & (df["Rating Value"] == 1)]
 
-    top_5 = filtered_df.groupby("Functional Area").size().sort_values(ascending=False).head(5)
+    df = filtered_df.groupby(["Functional Area"])["Position Title"].count().sort_values(ascending=False)
 
-    output = [html.Li(f"{area}: {size}") for area, size in top_5.items()]
+    print("printing this:", df)
 
-    top_5_df = top_5.to_frame()
+    output = [html.Li(f"{area}: {size}") for area, size in df.items()]
 
-    top_5_df = top_5_df.reset_index().rename(columns={0: "weight", "Functional Area": "target"})
-
-    top_5_df["source"] = "Functional Areas"
-
-    top_5_df["weight"] = top_5_df["weight"].apply(lambda x: x / 5)
+    df = functions.circle_packing_data(selected_skills)
 
     d3 = D3Blocks(chart="Circlepacking", frame=False, support=False)
 
-    d3.set_node_properties(top_5_df, size="sum")
-
-    d3.set_edge_properties(top_5_df)
-
-    for target in top_5_df["target"].unique():
-        color = "#{:06x}".format(random.randint(0, 0xFFFFFF))
-        if target in d3.node_properties:
-            d3.node_properties[target]["color"] = color
+    d3.set_node_properties(df)
+    d3.set_edge_properties(df)
 
     circlepacking_html = d3.show(
         filepath=None,
         save_button=False,
-        margin={"left": 200, "top": 10, "right": 0, "bottom": 0},
         zoom="mouseover",
         speed=1500,
-        border={'color': '#FFFFFF', 'width': 1.5, 'fill': '#F2C83F', "padding": 10},
+        border={'color': 'white', 'width': 1.5, 'fill': 'white', "padding": 10},
+        font = {'size': 20, "type": "sans-serif", 'color': "black", 'outlinecolor': 'none'},
+        figsize = [1000, 1700],
     )
+
+    circlepacking_html = re.sub(r'<body>', '<body><style>svg {background:white !important;}</style>', circlepacking_html)
 
     return output, circlepacking_html
