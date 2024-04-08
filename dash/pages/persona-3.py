@@ -1,6 +1,8 @@
-from dash import html, dcc, callback, Output, Input, __version__, register_page, no_update
+from dash import html, dcc, callback, Output, Input, __version__, register_page, no_update, dash_table, Dash, callback_context
 from dash.exceptions import PreventUpdate
 import functions
+import pandas as pd
+
 
 register_page(__name__)
 
@@ -9,16 +11,27 @@ unique_decision_making_authorities = functions.get_unique_decision_making_author
 unique_work_attribute_categories = functions.get_unique_work_attribute_categories()
 unique_specific_work_attribute_categories = functions.get_unique_special_work_attributes()
 
-df = functions.get_data_for_job_description_table()
+df = functions.read_data()
 
+columns_to_keep = [
+        "Description Number",
+        "Position Title",
+        "Functional Area",
+        "Product Area",
+        "Decision-Making Authority",
+        "Years of Experience",
+        "Education Credentials",
+    ]
+
+df = df[columns_to_keep].drop_duplicates(keep="last")
 
 def generate_table(dataframe):
     columns_to_keep = [
+        "Description Number",
         "Position Title",
-        "Multifunctional Responsibilities",
-        "Career Area",
+        "Functional Area",
         "Product Area",
-        "Position Level",
+        "Decision-Making Authority",
         "Years of Experience",
         "Education Credentials",
     ]
@@ -43,20 +56,20 @@ def update_dataframe_with_ratings(selected_skills):
         raise PreventUpdate
 
     try:
-        df = functions.rename_columns()
+        df = functions.get_data()
 
         print(f"DataFrame before filtering: {df.head()}")
 
-        filtered_df = df[(df["Specific Skill"].isin(selected_skills)) & (df["Rating Value"] == 1)]
+        filtered_df = df[(df["Specific Work Attribute"].isin(selected_skills)) & (df["Rating Value"] == 1)]
 
         if filtered_df.empty:
             print("Filtered DataFrame is empty. Check selected skills and rating values.")
             return []
 
-        top_3 = filtered_df.groupby("Career Area").size().sort_values(ascending=False).head(3)
+        top_3 = filtered_df.groupby("Functional Area").size().sort_values(ascending=False).head(3)
         top_3_df = top_3.to_frame()
         top_3_areas = top_3_df.index.tolist()
-        print(f"Top 3 career areas: {top_3_areas}")
+        print(f"Top 3 functional areas: {top_3_areas}")
 
         return top_3_areas
     except Exception as e:
@@ -79,9 +92,7 @@ layout = html.Div(
                             href="/",
                             children=[html.Img(src="./assets/home.png"), html.Span("Home")],
                         ),
-                        html.H1(
-                            className="heading-for-all-persona", children="Scholarly Publishing Career Exploration Tool"
-                        ),
+                        html.H1(className="heading-for-all-persona", children="Skills Map Dashboard"),
                     ],
                 ),
             ],
@@ -94,7 +105,7 @@ layout = html.Div(
                         html.Div(
                             className="selector",
                             children=[
-                                html.Label(["Current Career Area"]),
+                                html.Label(["Current Functional Area"]),
                                 dcc.Dropdown(
                                     id="functional-areas",
                                     className="drop-down",
@@ -106,7 +117,7 @@ layout = html.Div(
                         html.Div(
                             className="selector",
                             children=[
-                                html.Label(["Position Level"]),
+                                html.Label(["Decision Making Authority"]),
                                 dcc.Dropdown(
                                     id="decision-making-authorities",
                                     className="drop-down",
@@ -118,7 +129,7 @@ layout = html.Div(
                         html.Div(
                             className="selector",
                             children=[
-                                html.Label(["Specific Skill"]),
+                                html.Label(["Specific Work Attribute Categories"]),
                                 dcc.Dropdown(
                                     id="specific-work-attribute-categories",
                                     className="drop-down",
@@ -131,7 +142,7 @@ layout = html.Div(
                         html.Div(
                             className="selector",
                             children=[
-                                html.Label(["Skill Category"]),
+                                html.Label(["Work Attribute Categories"]),
                                 dcc.Dropdown(
                                     id="work-attribute-categories",
                                     className="drop-down",
@@ -149,7 +160,7 @@ layout = html.Div(
                             className="functional-area-column",
                             children=[
                                 html.Label(
-                                    ["Current Career Area"],
+                                    ["Current Functional Area"],
                                     style={"font-weight": "bold", "display": "block", "margin-bottom": "10px"},
                                 ),
                                 dcc.Dropdown(
@@ -175,7 +186,7 @@ layout = html.Div(
                             className="functional-area-column",
                             children=[
                                 html.Label(
-                                    ["Career Area 1"],
+                                    ["Functional Area 1"],
                                     style={"font-weight": "bold", "display": "block", "margin-bottom": "10px"},
                                 ),
                                 dcc.Dropdown(
@@ -201,7 +212,7 @@ layout = html.Div(
                             className="functional-area-column",
                             children=[
                                 html.Label(
-                                    ["Career Area 2"],
+                                    ["Functional Area 2"],
                                     style={"font-weight": "bold", "display": "block", "margin-bottom": "10px"},
                                 ),
                                 dcc.Dropdown(
@@ -227,7 +238,7 @@ layout = html.Div(
                             className="functional-area-column",
                             children=[
                                 html.Label(
-                                    ["Career Area 3"],
+                                    ["Functional Area 3"],
                                     style={"font-weight": "bold", "display": "block", "margin-bottom": "10px"},
                                 ),
                                 dcc.Dropdown(
@@ -257,12 +268,17 @@ layout = html.Div(
             id="table-container",
             className="skills-table-container",
             children=[
-                html.H4("Job Descriptions Based on Your Skills and Career Area"),
-                html.Div(
-                    id="scrollable-table-container",
-                    className="scrollable-table-container",
-                    children=[generate_table(df)],
-                    style={"maxHeight": "500px", "overflowY": "scroll"},
+                html.H4("Job Descriptions Based on Your Skills and Functional Area"),
+                dash_table.DataTable(
+                    id='table-sorting-filtering',
+                    columns=[{"name": i, "id": i} for i in columns_to_keep],
+                    data=df.to_dict('records'),
+                    filter_action='custom',
+                    filter_query='',
+                    sort_action='custom',
+                    sort_mode='multi',
+                    sort_by=[],
+                    style_table={'overflowX': 'scroll', 'maxHeight': '75vh', 'overflowY': 'auto'},
                 ),
             ],
         ),
@@ -285,16 +301,16 @@ layout = html.Div(
     ],
 )
 def update_skills_1(functional_area, tier, work_attribute):
-    df = functions.rename_columns()
+    df = functions.get_data()
 
     filtered_df = df[
-        (df["Career Area"] == functional_area)
-        & (df["Position Level"] == tier)
+        (df["Functional Area"] == functional_area)
+        & (df["Decision-Making Authority"] == tier)
         & (df["Rating Value"] == 1)
-        & (df["Skill Category"] == work_attribute)
+        & (df["Work Attribute Category"] == work_attribute)
     ]
 
-    skills = filtered_df["General Skill"].unique().tolist()[:5]
+    skills = filtered_df["General Work Attribute"].unique().tolist()[:5]
 
     skills.extend([""] * (5 - len(skills)))
     return skills
@@ -311,16 +327,16 @@ def update_skills_1(functional_area, tier, work_attribute):
     [Input("functional-area", "value"), Input("tier-two", "value"), Input("work-attribute-categories", "value")],
 )
 def update_skills_2(functional_area, tier, work_attribute):
-    df = functions.rename_columns()
+    df = functions.get_data()
 
     filtered_df = df[
-        (df["Career Area"] == functional_area)
-        & (df["Position Level"] == tier)
+        (df["Functional Area"] == functional_area)
+        & (df["Decision-Making Authority"] == tier)
         & (df["Rating Value"] == 1)
-        & (df["Skill Category"] == work_attribute)
+        & (df["Work Attribute Category"] == work_attribute)
     ]
 
-    skills = filtered_df["General Skill"].unique().tolist()[:5]
+    skills = filtered_df["General Work Attribute"].unique().tolist()[:5]
 
     skills.extend([""] * (5 - len(skills)))
 
@@ -338,15 +354,15 @@ def update_skills_2(functional_area, tier, work_attribute):
     [Input("functional-area-two", "value"), Input("tier-three", "value"), Input("work-attribute-categories", "value")],
 )
 def update_skills_3(functional_area, tier, work_attribute):
-    df = functions.rename_columns()
+    df = functions.get_data()
     filtered_df = df[
-        (df["Career Area"] == functional_area)
-        & (df["Position Level"] == tier)
+        (df["Functional Area"] == functional_area)
+        & (df["Decision-Making Authority"] == tier)
         & (df["Rating Value"] == 1)
-        & (df["Skill Category"] == work_attribute)
+        & (df["Work Attribute Category"] == work_attribute)
     ]
 
-    skills = filtered_df["General Skill"].unique().tolist()[:5]
+    skills = filtered_df["General Work Attribute"].unique().tolist()[:5]
 
     skills.extend([""] * (5 - len(skills)))
     return skills
@@ -363,15 +379,15 @@ def update_skills_3(functional_area, tier, work_attribute):
     [Input("functional-area-three", "value"), Input("tier-four", "value"), Input("work-attribute-categories", "value")],
 )
 def update_skills_4(functional_area, tier, work_attribute):
-    df = functions.rename_columns()
+    df = functions.get_data()
     filtered_df = df[
-        (df["Career Area"] == functional_area)
-        & (df["Position Level"] == tier)
+        (df["Functional Area"] == functional_area)
+        & (df["Decision-Making Authority"] == tier)
         & (df["Rating Value"] == 1)
-        & (df["Skill Category"] == work_attribute)
+        & (df["Work Attribute Category"] == work_attribute)
     ]
 
-    skills = filtered_df["General Skill"].unique().tolist()[:5]
+    skills = filtered_df["General Work Attribute"].unique().tolist()[:5]
 
     skills.extend([""] * (5 - len(skills)))
 
@@ -401,38 +417,107 @@ def set_default_functional_areas(selected_attributes):
         top_3_areas[2] if len(top_3_areas) > 2 else None,
     )
 
-
 @callback(
-    Output("scrollable-table-container", "children"),
+    Output('table-sorting-filtering', 'data'),
     [
-        Input("functional-area", "value"),
-        Input("functional-area-two", "value"),
-        Input("functional-area-three", "value"),
-        Input("tier-two", "value"),
-        Input("tier-three", "value"),
-        Input("tier-four", "value"),
+        Input('functional-area', 'value'),
+        Input('functional-area-two', 'value'),
+        Input('functional-area-three', 'value'),
+        Input('tier-two', 'value'),
+        Input('tier-three', 'value'),
+        Input('tier-four', 'value'),
+        Input('table-sorting-filtering', 'sort_by'),
+        Input('table-sorting-filtering', 'filter_query')
     ],
 )
-def update_table(fa1, fa2, fa3, t1, t2, t3):
-    df_updated = functions.get_data_for_job_description_table()
-    print(f"Received dropdown values: {fa1}, {fa2}, {fa3}")
-    print(f"Received tier values: {t1}, {t2}, {t3}")
 
-    conditions = []
-    if fa1 and t1:
-        conditions.append((df_updated["Career Area"].str.lower() == fa1.lower()) & (df_updated["Position Level"] == t1))
-    if fa2 and t2:
-        conditions.append((df_updated["Career Area"].str.lower() == fa2.lower()) & (df_updated["Position Level"] == t2))
-    if fa3 and t3:
-        conditions.append((df_updated["Career Area"].str.lower() == fa3.lower()) & (df_updated["Position Level"] == t3))
+def update_table_data(fa1, fa2, fa3, t1, t2, t3, sort_by, filter_query):
+    ctx = callback_context
+    triggered_id = ctx.triggered[0]['prop_id'].split('.')[0]
 
-    if conditions:
-        combined_conditions = conditions[0]
-        for cond in conditions[1:]:
-            combined_conditions |= cond
-        filtered_df = df_updated[combined_conditions]
-    else:
-        filtered_df = df_updated
+    dff = df.copy()
+    print(f"Original DataFrame size: {len(dff)}")
+    dff = apply_dropdown_filters(fa1, fa2, fa3, t1, t2, t3, dff)
+    print(f"Size after dropdown filtering: {len(dff)}")
 
-    print(f"Filtered DataFrame: {filtered_df['Career Area'].unique()}")
-    return generate_table(filtered_df)
+    dff = apply_filtering(filter_query, dff)
+    dff = apply_sorting(sort_by, dff)
+
+    return dff.to_dict('records')
+
+
+def apply_dropdown_filters(fa1, fa2, fa3, t1, t2, t3, df):
+    filtered_dfs = [] 
+
+    df_fa1_t1 = df[(df["Functional Area"] == fa1.lower()) & (df["Decision-Making Authority"] == t1)]
+    filtered_dfs.append(df_fa1_t1)
+
+
+    df_fa2_t2 = df[(df["Functional Area"] == fa2.lower()) & (df["Decision-Making Authority"] == t2)]
+    filtered_dfs.append(df_fa2_t2)
+
+
+    df_fa3_t3 = df[(df["Functional Area"] == fa3.lower()) & (df["Decision-Making Authority"] == t3)]
+    filtered_dfs.append(df_fa3_t3)
+
+    result_df = pd.concat(filtered_dfs).drop_duplicates()
+
+    return result_df
+
+def apply_filtering(filter_query, df):
+    filtering_expressions = filter_query.split(' && ')
+    for filter_part in filtering_expressions:
+        col_name, operator, filter_value = split_filter_part(filter_part)
+        if operator == 'eq':
+            df = df[df[col_name] == filter_value]
+        elif operator == 'ne':
+            df = df[df[col_name] != filter_value]
+        elif operator == 'gt':
+            df = df[df[col_name] > filter_value]
+        elif operator == 'ge':
+            df = df[df[col_name] >= filter_value]
+        elif operator == 'lt':
+            df = df[df[col_name] < filter_value]
+        elif operator == 'le':
+            df = df[df[col_name] <= filter_value]
+        elif operator == 'contains':
+            df = df[df[col_name].astype(str).str.contains(filter_value)]
+        elif operator == 'datestartswith':
+            df = df[df[col_name].astype(str).str.startswith(filter_value)]
+    return df
+
+def split_filter_part(filter_part):
+    operators = [['ge ', '>='],
+                 ['le ', '<='],
+                 ['lt ', '<'],
+                 ['gt ', '>'],
+                 ['ne ', '!='],
+                 ['eq ', '='],
+                 ['contains '],
+                 ['datestartswith ']]
+    for operator_type in operators:
+        for operator in operator_type:
+            if operator in filter_part:
+                name_part, value_part = filter_part.split(operator, 1)
+                name = name_part[name_part.find('{') + 1: name_part.rfind('}')]
+                value_part = value_part.strip()
+
+                # Removing quotes and handling if it's not a numeric value
+                if value_part[0] == value_part[-1] and value_part[0] in ("'", '"', '`'):
+                    value = value_part[1:-1]
+                else:
+                    try:
+                        value = float(value_part)
+                    except ValueError:
+                        value = value_part
+                
+                return name, operator_type[0].strip(), value
+    return [None] * 3
+
+def apply_sorting(sort_by, df):
+    if sort_by:
+        for sort_term in sort_by:
+            col_name = sort_term["column_id"]
+            direction = sort_term["direction"]
+            df = df.sort_values(by=col_name, ascending=(direction == "asc"))
+    return df
