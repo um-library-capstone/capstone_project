@@ -49,22 +49,6 @@ layout = html.Div(
                                     ],
                                     className="card", id="card-1"
                                 ),
-                                # Card 2
-                                html.Div(
-                                    [
-                                        html.A(
-                                            href="persona-2",
-                                            children=[
-                                                html.Img(src="./assets/skills_photo.png", alt="Identify Skills"),
-                                                html.H2("Explore Skill Sets"),
-                                                html.P(
-                                                    "Discover which skills you should develop and highlight based on your field of interest!"
-                                                ),
-                                            ],
-                                        )
-                                    ],
-                                    className="card", id="card-2"
-                                ),
                                 # Card 3
                                 html.Div(
                                     [
@@ -80,6 +64,22 @@ layout = html.Div(
                                         )
                                     ],
                                     className="card", id="card-3"
+                                ),
+                                # Card 2
+                                html.Div(
+                                    [
+                                        html.A(
+                                            href="persona-2",
+                                            children=[
+                                                html.Img(src="./assets/skills_photo.png", alt="Identify Skills"),
+                                                html.H2("Explore Skill Sets"),
+                                                html.P(
+                                                    "Discover which skills you should develop and highlight based on your field of interest!"
+                                                ),
+                                            ],
+                                        )
+                                    ],
+                                    className="card", id="card-2"
                                 ),
                             ],
                         ),
