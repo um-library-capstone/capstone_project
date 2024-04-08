@@ -69,6 +69,11 @@ def get_data():
     )
 
     df = df.loc[df["Functional Area"] != "Other"]
+    df['Decision-Making Authority'] = df['Decision-Making Authority'].str.replace('It', 'IT')
+    df['Functional Area'] = df['Functional Area'].str.replace('It', 'IT')
+    df['Product Area'] = df['Product Area'].str.replace('It', 'IT')
+    df['Position Title'] = df['Position Title'].str.replace('It', 'IT')
+
 
     return df
 
