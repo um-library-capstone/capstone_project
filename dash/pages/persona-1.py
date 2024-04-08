@@ -87,7 +87,7 @@ layout = html.Div(
                 html.Div(
                     className="iframe-one-selector",
                     children=[
-                        html.Label(["Career Areas You Should Explore"]),
+                        html.Label(["Career Areas To Explore"]),
                         html.Iframe(id="iframe-one", srcDoc=""),
                     ],
                 ),
@@ -147,7 +147,8 @@ def update_dataframe_with_ratings(n_clicks, selected_skills):
         zoom="mouseover",
         speed=1500,
         border={'color': '#74d7ca', 'width': 1.5, 'fill': '#74d7ca', "padding": 10},
-        font = {'size': 20, "type": "sans-serif", 'color': "black", 'outlinecolor': 'none', 'wrapwidth': 100},
+        # 'wrapwidth': 100
+        font = {'size': 20, "type": "sans-serif", 'color': "black", 'outlinecolor': 'none'},
         figsize = [1000, 1700],
     )
 
