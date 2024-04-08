@@ -136,6 +136,19 @@ def update_dataframe_with_ratings(n_clicks, selected_skills):
 
     df = functions.circle_packing_data(selected_skills)
 
+    # edit this code to make the text fit better:
+    # # Custom logic to handle long texts
+    # max_text_length = 30  # Define the maximum length for each line
+    # for i, row in df.iterrows():
+    #     if len(row['Functional Area']) > max_text_length:  # Replace 'Functional Area' with the correct column name
+    #         # Split the text into multiple lines
+    #         num_lines = len(row['Functional Area']) // max_text_length + 1
+    #         lines = [row['Functional Area'][j:j+max_text_length] for j in range(0, len(row['Functional Area']), max_text_length)]
+    #         # Join the lines with '\n' to create multiline text
+    #         multiline_text = '\n'.join(lines)
+    #         # Update the 'Functional Area' column with multiline text
+    #         df.at[i, 'Functional Area'] = multiline_text
+
     d3 = D3Blocks(chart="Circlepacking", frame=False, support=False)
 
     d3.set_node_properties(df)
@@ -148,10 +161,11 @@ def update_dataframe_with_ratings(n_clicks, selected_skills):
         speed=1500,
         border={'color': '#74d7ca', 'width': 1.5, 'fill': '#74d7ca', "padding": 10},
         # 'wrapwidth': 100
-        font = {'size': 20, "type": "sans-serif", 'color': "black", 'outlinecolor': 'none'},
+        font = {'size': 20, "type": "sans-serif", 'color': "black", 'outlinecolor': 'none', 'wrapwidth': 50},
         figsize = [1000, 1700],
     )
 
     circlepacking_html = re.sub(r'<body>', '<body><style>svg {background:white !important;}</style>', circlepacking_html)
 
     return output, circlepacking_html
+
