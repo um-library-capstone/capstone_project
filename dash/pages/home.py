@@ -47,23 +47,8 @@ layout = html.Div(
                                             ],
                                         )
                                     ],
-                                    className="card", id="card-1"
-                                ),
-                                # Card 3
-                                html.Div(
-                                    [
-                                        html.A(
-                                            href="persona-3",
-                                            children=[
-                                                html.Img(src="./assets/advancement_icon.png", alt="Career Advancement"),
-                                                html.H2("Explore Career Advancement"),
-                                                html.P(
-                                                    "Find out what skills you should develop to advance your career and find out about other fields that might be a fit!"
-                                                ),
-                                            ],
-                                        )
-                                    ],
-                                    className="card", id="card-3"
+                                    className="card",
+                                    id="card-1",
                                 ),
                                 # Card 2
                                 html.Div(
@@ -79,7 +64,25 @@ layout = html.Div(
                                             ],
                                         )
                                     ],
-                                    className="card", id="card-2"
+                                    className="card",
+                                    id="card-2",
+                                ),
+                                # Card 3
+                                html.Div(
+                                    [
+                                        html.A(
+                                            href="persona-3",
+                                            children=[
+                                                html.Img(src="./assets/advancement_icon.png", alt="Career Advancement"),
+                                                html.H2("Explore Career Advancement"),
+                                                html.P(
+                                                    "Find out what skills you should develop to advance your career and find out about other fields that might be a fit!"
+                                                ),
+                                            ],
+                                        )
+                                    ],
+                                    className="card",
+                                    id="card-3",
                                 ),
                             ],
                         ),

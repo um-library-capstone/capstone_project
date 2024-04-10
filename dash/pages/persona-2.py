@@ -81,7 +81,8 @@ layout = html.Div(
                                         html.P(
                                             [
                                                 """The size of the circle indicates the importance of each skill category. 
-                                    The bigger circles have higher importance for the given career area and the given position level."""
+                                                    The bigger circles have higher importance for the given career area and the 
+                                                    given position level."""
                                             ]
                                         )
                                     ],
@@ -101,7 +102,7 @@ layout = html.Div(
                 html.Div(
                     className="iframe-selector",
                     children=[
-                        html.Label(["Skills you should develop:"]),
+                        html.Label(["Skills you should develop"]),
                         html.Iframe(id="iframe", srcDoc=""),
                     ],
                 ),
