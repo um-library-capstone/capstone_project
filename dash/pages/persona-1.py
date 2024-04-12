@@ -130,24 +130,9 @@ def update_dataframe_with_ratings(n_clicks, selected_skills):
 
     df = filtered_df.groupby(["Functional Area"])["Position Title"].count().sort_values(ascending=False)
 
-    print("printing this:", df)
-
-    output = [html.Li(f"{area}: {size}") for area, size in df.items()]
+    output = [html.Li(f"{area}") for area, size in df.items()]
 
     df = functions.circle_packing_data(selected_skills)
-
-    # edit this code to make the text fit better:
-    # # Custom logic to handle long texts
-    # max_text_length = 30  # Define the maximum length for each line
-    # for i, row in df.iterrows():
-    #     if len(row['Functional Area']) > max_text_length:  # Replace 'Functional Area' with the correct column name
-    #         # Split the text into multiple lines
-    #         num_lines = len(row['Functional Area']) // max_text_length + 1
-    #         lines = [row['Functional Area'][j:j+max_text_length] for j in range(0, len(row['Functional Area']), max_text_length)]
-    #         # Join the lines with '\n' to create multiline text
-    #         multiline_text = '\n'.join(lines)
-    #         # Update the 'Functional Area' column with multiline text
-    #         df.at[i, 'Functional Area'] = multiline_text
 
     d3 = D3Blocks(chart="Circlepacking", frame=False, support=False)
 
@@ -157,9 +142,7 @@ def update_dataframe_with_ratings(n_clicks, selected_skills):
     circlepacking_html = d3.show(
         filepath=None,
         save_button=False,
-        zoom="mouseover",
-        speed=1500,
-        border={'color': '#74d7ca', 'width': 1.5, 'fill': '#74d7ca', "padding": 10},
+        border={'color': '#74d7ca', 'width': 1.5, 'fill': '#74d7ca', "padding": 100},
         # 'wrapwidth': 100
         font = {'size': 20, "type": "sans-serif", 'color': "black", 'outlinecolor': 'none', 'wrapwidth': 50},
         figsize = [1000, 1700],
