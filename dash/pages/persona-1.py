@@ -38,7 +38,8 @@ layout = html.Div(
             className="main-selector",
             children=[
                 html.Div(
-                    [
+                    className="persona1-main-div",
+                    children=[
                         html.H2(children="Explore Career Options", style={"textAlign": "center"}),
                         html.Div(
                             className="selector-container",

@@ -10,7 +10,7 @@
 
 .selector {
     text-align: center;
-    margin: 0 0 30px 0;
+    margin: 0px 0px 30px 0px;
 }
 
 .selector label {
@@ -18,7 +18,11 @@
 }
 
 .selector .drop-down {
-    width: 400px;
+    width: 100%;
+}
+
+.selector #specific_skills{
+    width: 300px;
 }
 
 div.page-container {
@@ -41,13 +45,15 @@ header#home-header {
     width: 400px;
 }
 
-.home-icon {
+.home-icon span{
     text-decoration: none;
     color: black;
+    margin-left: 20px;
 }
 
 .home-icon img {
     height: 50px;
+    margin-left: 20px;
 }
 
 #iframe {
@@ -62,6 +68,10 @@ header#home-header {
     text-align: center;
 }
 
+/* .iframe-selector label{
+    font-weight: bold;
+} */
+
 nav {
     display: grid;
     grid-template-columns: 3% 20% 75%;
@@ -72,6 +82,37 @@ nav {
     grid-template-columns: 30% 70%;
     justify-items: start;
     align-items: start;
+}
+
+.main-selector div.persona1-main-div{
+    width: 80%;
+    background-color: #ddd;
+    border: 1px solid black;
+    margin: 5px 0px 0px 20px;
+    padding: 0 30px 30px 30px;
+}
+
+.main-selector div.persona2-main-div{
+    width: 80%;
+    background-color: #eaeaea;
+    border: 1px solid black;
+    margin: 5px 20px 0px 20px;
+    padding: 0 30px 30px 30px;
+}
+
+.main-selector div.persona3-main-div{
+    width: 80%;
+    background-color: #eaeaea;
+    border: 1px solid black;
+    margin: 5px 20px 0px 20px;
+    padding: 20px 30px 20px 30px;
+}
+
+.selector#functional-areas.drop-down, 
+.selector#decision-making-authorities.drop-down, 
+.selector#work-attribute-categories.drop-down,
+.selector#specific-work-attribute-categories.drop-down{
+    width: 200px;
 }
 
 .persona-text {
@@ -88,7 +129,6 @@ nav {
 .home-page-container {
     display: flex;
     flex-direction: column;
-    /* background-color: #d3d3d3; */
     padding: 20px;
     align-items: end;
     border-radius: 20px;
@@ -100,7 +140,6 @@ nav {
     font-size: 1.72em;
     font-weight: bold;
     color: black;
-    /* background-color: yellow; */
     border: solid 1px black;
     padding: 30px 115px 30px 115px;
     border-radius: 5px;
@@ -113,18 +152,10 @@ nav {
     font-size: 1.5em;
 }
 
-.home-page-container #button {
-    padding: 5px;
-    width: 20%;
-    font-size: 1.05em;
-    font-weight: bold;
-}
-
 .heading-for-all-persona {
     grid-column-start: 3;
     grid-column-end: 4;
     justify-self: center;
-    /* text-align: center; */
 }
 
 #p-selector,
@@ -134,12 +165,17 @@ nav {
 }
 
 #p-selector {
-    color: gray;
-    font-size: small;
+    color: rgb(77, 76, 76);
+    font-size:small;
+    font-weight: bold;
 }
 
 #skill-selector-2 {
-    color: gray;
+    color: rgb(5, 5, 5);
+}
+
+#skill-selector-1{
+    color:rgb(92, 91, 91);
 }
 
 
@@ -147,7 +183,6 @@ nav {
     border: none;
     width: 100%;
     height: 700px;
-    /* border-left: solid 10px black; */
     grid-row-start: 2;
     grid-row-end: 3;
 }
@@ -157,6 +192,11 @@ nav {
     height: 700px;
     text-align: center;
     display: grid;
+}
+
+.iframe-one-selector label{
+    padding: 5px;
+    font-weight: bold;
 }
 
 /* new style */
@@ -284,7 +324,6 @@ div#card-2 p,
 div#card-2 a,
 div#card-3 p,
 div#card-3 a {
-    /* color: white; */
     margin-bottom: 100px;
     font-size: 1.05em;
 }
@@ -299,6 +338,7 @@ div#card-3 a {
 
 .functional-area-out {
     border: grey 1px solid;
-    padding-bottom: 20px;
-    background-color: #ddd;
+    padding: 10px;
+    background-color: #f3f3f5;
+    margin: 0px 20px 10px 20px;
 }

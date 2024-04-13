@@ -34,7 +34,8 @@ layout = html.Div(
             className="main-selector",
             children=[
                 html.Div(
-                    [
+                    className="persona2-main-div",
+                    children=[
                         html.H2(children="Explore Skill Sets", style={"textAlign": "center"}),
                         html.Div(
                             children=[
@@ -160,7 +161,9 @@ def update_graph(functional_area, decision_making_authority, work_attribute_cate
 
     if df.shape[0] == 0:
 
-        return f"""<h1 class="no-data" style="text-align:center;border:2px solid black;font-family: sans-serif;padding:10px;">Your query did not turn up any data.</h1>"""
+        return f"""<h1 class="no-data" style="text-align:center;border:1px solid black;
+                border-radius:8px;background-color:#d3d3d3;font-family: sans-serif;padding:80px;
+                margin:80px;">There is no data to show for this query.</h1>"""
 
     d3 = D3Blocks(chart="tree", frame=False, support=False)
 

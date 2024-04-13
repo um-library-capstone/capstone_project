@@ -92,7 +92,7 @@ layout = html.Div(
                             href="/",
                             children=[html.Img(src="./assets/home.png"), html.Span("Home")],
                         ),
-                        html.H1(className="heading-for-all-persona", children="Skills Map Dashboard"),
+                        html.H1(className="heading-for-all-persona", children="Scholarly Publishing Career Exploration Tool"),
                     ],
                 ),
             ],
@@ -101,11 +101,12 @@ layout = html.Div(
             className="main-selector",
             children=[
                 html.Div(
+                    className="persona3-main-div",
                     children=[
                         html.Div(
                             className="selector",
                             children=[
-                                html.Label(["Current Functional Area"]),
+                                html.Label(["Current Career Area"]),
                                 dcc.Dropdown(
                                     id="functional-areas",
                                     className="drop-down",
@@ -117,7 +118,7 @@ layout = html.Div(
                         html.Div(
                             className="selector",
                             children=[
-                                html.Label(["Decision Making Authority"]),
+                                html.Label(["Position Level"]),
                                 dcc.Dropdown(
                                     id="decision-making-authorities",
                                     className="drop-down",
@@ -129,7 +130,7 @@ layout = html.Div(
                         html.Div(
                             className="selector",
                             children=[
-                                html.Label(["Specific Work Attribute Categories"]),
+                                html.Label(["Specific Skill Category"]),
                                 dcc.Dropdown(
                                     id="specific-work-attribute-categories",
                                     className="drop-down",
@@ -142,7 +143,7 @@ layout = html.Div(
                         html.Div(
                             className="selector",
                             children=[
-                                html.Label(["Work Attribute Categories"]),
+                                html.Label(["Skill Category"]),
                                 dcc.Dropdown(
                                     id="work-attribute-categories",
                                     className="drop-down",
