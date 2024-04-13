@@ -22,9 +22,9 @@ def get_data():
 
     tier_map = {
     'Tier 5': 'Entry Level',
-    'Tier 4': 'Early Career',
-    'Tier 3': 'Management',
-    'Tier 2': 'Executive Management',
+    'Tier 4': 'Associate',
+    'Tier 3': 'Mid-Senior',
+    'Tier 2': 'Manager',
     'Tier 1': 'Department Head',
     'Tier 0': 'Senior Executive'
     }

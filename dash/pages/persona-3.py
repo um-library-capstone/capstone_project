@@ -159,15 +159,15 @@ layout = html.Div(
                         html.Div(
                             className="functional-area-column",
                             children=[
-                                html.Label(
-                                    ["Current Functional Area"],
-                                    style={"font-weight": "bold", "display": "block", "margin-bottom": "10px"},
-                                ),
-                                dcc.Dropdown(
+                                # html.Label(
+                                #     ["Current Functional Area"],
+                                #     style={"font-weight": "bold", "display": "block", "margin-bottom": "5px"},
+                                # ),
+                                html.Div(
                                     id="current-functional-area",
                                     className="drop-down",
-                                    options=unique_functional_areas,
-                                    value=unique_functional_areas[0],
+                                    children=unique_functional_areas[0],
+                                    style={"padding": "10px", "margin-bottom": "20px", "border": "1px solid #ccc", "font-weight": "bold"}, 
                                 ),
                                 dcc.Dropdown(
                                     id="current-tier",
@@ -185,15 +185,15 @@ layout = html.Div(
                         html.Div(
                             className="functional-area-column",
                             children=[
-                                html.Label(
-                                    ["Functional Area 1"],
-                                    style={"font-weight": "bold", "display": "block", "margin-bottom": "10px"},
-                                ),
-                                dcc.Dropdown(
+                                # html.Label(
+                                #     ["Functional Area 1"],
+                                #     style={"font-weight": "bold", "display": "block", "margin-bottom": "5px"},
+                                # ),
+                                html.Div(
                                     id="functional-area",
-                                    className="drop-down",
-                                    options=unique_functional_areas,
-                                    value=unique_functional_areas[0],
+                                    className="info-display",
+                                    children=unique_functional_areas[0],
+                                    style={"padding": "10px", "margin-bottom": "20px", "border": "1px solid #ccc", "font-weight": "bold",}
                                 ),
                                 dcc.Dropdown(
                                     id="tier-two",
@@ -211,15 +211,15 @@ layout = html.Div(
                         html.Div(
                             className="functional-area-column",
                             children=[
-                                html.Label(
-                                    ["Functional Area 2"],
-                                    style={"font-weight": "bold", "display": "block", "margin-bottom": "10px"},
-                                ),
-                                dcc.Dropdown(
+                                # html.Label(
+                                #     ["Functional Area 2"],
+                                #     style={"font-weight": "bold", "display": "block", "margin-bottom": "5px"},
+                                # ),
+                                html.Div(
                                     id="functional-area-two",
-                                    className="drop-down",
-                                    options=unique_functional_areas,
-                                    value=unique_functional_areas[0],
+                                    className="info-display",
+                                    children=unique_functional_areas[0],
+                                    style={"padding": "10px", "margin-bottom": "20px", "border": "1px solid #ccc", "font-weight": "bold",}
                                 ),
                                 dcc.Dropdown(
                                     id="tier-three",
@@ -237,15 +237,15 @@ layout = html.Div(
                         html.Div(
                             className="functional-area-column",
                             children=[
-                                html.Label(
-                                    ["Functional Area 3"],
-                                    style={"font-weight": "bold", "display": "block", "margin-bottom": "10px"},
-                                ),
-                                dcc.Dropdown(
+                                # html.Label(
+                                #     ["Functional Area 3"],
+                                #     style={"font-weight": "bold", "display": "block", "margin-bottom": "5px"},
+                                # ),
+                                html.Div(
                                     id="functional-area-three",
-                                    className="drop-down",
-                                    options=unique_functional_areas,
-                                    value=unique_functional_areas[0],
+                                    className="info-display",
+                                    children=unique_functional_areas[0],
+                                    style={"padding": "10px", "margin-bottom": "20px", "border": "1px solid #ccc", "font-weight": "bold",}
                                 ),
                                 dcc.Dropdown(
                                     id="tier-four",
@@ -271,6 +271,7 @@ layout = html.Div(
                 html.H4("Job Descriptions Based on Your Skills and Functional Area"),
                 dash_table.DataTable(
                     id='table-sorting-filtering',
+                    # columns=[{"name": i, "id": i} for i in columns_to_keep],
                     columns=[{"name": i, "id": i} for i in columns_to_keep],
                     data=df.to_dict('records'),
                     filter_action='custom',
@@ -278,7 +279,18 @@ layout = html.Div(
                     sort_action='custom',
                     sort_mode='multi',
                     sort_by=[],
-                    style_table={'overflowX': 'scroll', 'maxHeight': '75vh', 'overflowY': 'auto'},
+                    # style_table={'overflowX': 'scroll', 'maxHeight': '75vh', 'overflowY': 'auto'},
+                    style_table={'minWidth': '100%', 'overflowX': 'auto', 'overflowY': 'scroll', 'maxHeight': '500px',},
+                    style_cell={
+                    'minWidth': '150px', 'width': '150px', 'maxWidth': '150px',
+                    'whiteSpace': 'normal',
+                    'fontSize': '12px',
+                    'padding': '5px'
+                    }, 
+                    style_header={  # Styling for the header to match cell styles
+                            'fontWeight': 'bold',
+                            'padding': '5px'
+                        },
                 ),
             ],
         ),
@@ -295,7 +307,7 @@ layout = html.Div(
         Output("skill-1-5", "children"),
     ],
     [
-        Input("current-functional-area", "value"),
+        Input("current-functional-area", "children"),
         Input("current-tier", "value"),
         Input("work-attribute-categories", "value"),
     ],
@@ -324,7 +336,7 @@ def update_skills_1(functional_area, tier, work_attribute):
         Output("skill-4", "children"),
         Output("skill-5", "children"),
     ],
-    [Input("functional-area", "value"), Input("tier-two", "value"), Input("work-attribute-categories", "value")],
+    [Input("functional-area", "children"), Input("tier-two", "value"), Input("work-attribute-categories", "value")],
 )
 def update_skills_2(functional_area, tier, work_attribute):
     df = functions.get_data()
@@ -351,7 +363,7 @@ def update_skills_2(functional_area, tier, work_attribute):
         Output("skill-3-4", "children"),
         Output("skill-3-5", "children"),
     ],
-    [Input("functional-area-two", "value"), Input("tier-three", "value"), Input("work-attribute-categories", "value")],
+    [Input("functional-area-two", "children"), Input("tier-three", "value"), Input("work-attribute-categories", "value")],
 )
 def update_skills_3(functional_area, tier, work_attribute):
     df = functions.get_data()
@@ -376,7 +388,7 @@ def update_skills_3(functional_area, tier, work_attribute):
         Output("skill-4-4", "children"),
         Output("skill-4-5", "children"),
     ],
-    [Input("functional-area-three", "value"), Input("tier-four", "value"), Input("work-attribute-categories", "value")],
+    [Input("functional-area-three", "children"), Input("tier-four", "value"), Input("work-attribute-categories", "value")],
 )
 def update_skills_4(functional_area, tier, work_attribute):
     df = functions.get_data()
@@ -396,9 +408,9 @@ def update_skills_4(functional_area, tier, work_attribute):
 
 @callback(
     [
-        Output("functional-area", "value"),
-        Output("functional-area-two", "value"),
-        Output("functional-area-three", "value"),
+        Output("functional-area", "children"),
+        Output("functional-area-two", "children"),
+        Output("functional-area-three", "children"),
     ],
     [Input("specific-work-attribute-categories", "value")],
 )
@@ -420,9 +432,11 @@ def set_default_functional_areas(selected_attributes):
 @callback(
     Output('table-sorting-filtering', 'data'),
     [
-        Input('functional-area', 'value'),
-        Input('functional-area-two', 'value'),
-        Input('functional-area-three', 'value'),
+        Input('current-functional-area', 'children'),
+        Input('functional-area', 'children'),
+        Input('functional-area-two', 'children'),
+        Input('functional-area-three', 'children'),
+        Input('current-tier', 'value'),
         Input('tier-two', 'value'),
         Input('tier-three', 'value'),
         Input('tier-four', 'value'),
@@ -431,13 +445,13 @@ def set_default_functional_areas(selected_attributes):
     ],
 )
 
-def update_table_data(fa1, fa2, fa3, t1, t2, t3, sort_by, filter_query):
+def update_table_data(fa0, fa1, fa2, fa3, t0, t1, t2, t3, sort_by, filter_query):
     ctx = callback_context
     triggered_id = ctx.triggered[0]['prop_id'].split('.')[0]
 
     dff = df.copy()
     print(f"Original DataFrame size: {len(dff)}")
-    dff = apply_dropdown_filters(fa1, fa2, fa3, t1, t2, t3, dff)
+    dff = apply_dropdown_filters(fa0,fa1, fa2, fa3, t0, t1, t2, t3, dff)
     print(f"Size after dropdown filtering: {len(dff)}")
 
     dff = apply_filtering(filter_query, dff)
@@ -446,8 +460,11 @@ def update_table_data(fa1, fa2, fa3, t1, t2, t3, sort_by, filter_query):
     return dff.to_dict('records')
 
 
-def apply_dropdown_filters(fa1, fa2, fa3, t1, t2, t3, df):
+def apply_dropdown_filters(fa0, fa1, fa2, fa3, t0, t1, t2, t3, df):
     filtered_dfs = [] 
+
+    df_fa0_t0 = df[(df["Functional Area"] == fa0.lower()) & (df["Decision-Making Authority"] == t0)]
+    filtered_dfs.append(df_fa0_t0)
 
     df_fa1_t1 = df[(df["Functional Area"] == fa1.lower()) & (df["Decision-Making Authority"] == t1)]
     filtered_dfs.append(df_fa1_t1)
