@@ -160,10 +160,6 @@ layout = html.Div(
                         html.Div(
                             className="functional-area-column",
                             children=[
-                                # html.Label(
-                                #     ["Current Functional Area"],
-                                #     style={"font-weight": "bold", "display": "block", "margin-bottom": "5px"},
-                                # ),
                                 html.Div(
                                     id="current-functional-area",
                                     className="drop-down",
@@ -186,10 +182,6 @@ layout = html.Div(
                         html.Div(
                             className="functional-area-column",
                             children=[
-                                # html.Label(
-                                #     ["Functional Area 1"],
-                                #     style={"font-weight": "bold", "display": "block", "margin-bottom": "5px"},
-                                # ),
                                 html.Div(
                                     id="functional-area",
                                     className="info-display",
@@ -212,10 +204,6 @@ layout = html.Div(
                         html.Div(
                             className="functional-area-column",
                             children=[
-                                # html.Label(
-                                #     ["Functional Area 2"],
-                                #     style={"font-weight": "bold", "display": "block", "margin-bottom": "5px"},
-                                # ),
                                 html.Div(
                                     id="functional-area-two",
                                     className="info-display",
@@ -238,10 +226,6 @@ layout = html.Div(
                         html.Div(
                             className="functional-area-column",
                             children=[
-                                # html.Label(
-                                #     ["Functional Area 3"],
-                                #     style={"font-weight": "bold", "display": "block", "margin-bottom": "5px"},
-                                # ),
                                 html.Div(
                                     id="functional-area-three",
                                     className="info-display",
@@ -272,7 +256,6 @@ layout = html.Div(
                 html.H4("Job Descriptions Based on Your Skills and Functional Area"),
                 dash_table.DataTable(
                     id='table-sorting-filtering',
-                    # columns=[{"name": i, "id": i} for i in columns_to_keep],
                     columns=[{"name": i, "id": i} for i in columns_to_keep],
                     data=df.to_dict('records'),
                     filter_action='custom',
@@ -280,7 +263,6 @@ layout = html.Div(
                     sort_action='custom',
                     sort_mode='multi',
                     sort_by=[],
-                    # style_table={'overflowX': 'scroll', 'maxHeight': '75vh', 'overflowY': 'auto'},
                     style_table={'minWidth': '100%', 'overflowX': 'auto', 'overflowY': 'scroll', 'maxHeight': '500px',},
                     style_cell={
                     'minWidth': '150px', 'width': '150px', 'maxWidth': '150px',

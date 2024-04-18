@@ -1,23 +1,7 @@
 import pandas as pd
 
+# Read the data
 def read_data():
-    df = pd.read_csv("./data/PJDD_CodingData_Clean_Anon_Long_CatNum.csv")
-
-    tier_map = {
-    'Tier 5': 'Entry Level',
-    'Tier 4': 'Early Career',
-    'Tier 3': 'Management',
-    'Tier 2': 'Executive Management',
-    'Tier 1': 'Department Head',
-    'Tier 0': 'Senior Executive'
-    }
-
-    df['Decision-Making Authority'] = df['Decision-Making Authority'].map(tier_map)
-
-    return df
-
-def get_data():
-
     df = pd.read_csv("./data/PJDD_CodingData_Clean_Anon_Long_CatNum.csv")
 
     tier_map = {
@@ -30,6 +14,13 @@ def get_data():
     }
 
     df['Decision-Making Authority'] = df['Decision-Making Authority'].map(tier_map)
+
+    return df
+
+# Get the data
+def get_data():
+
+    df = read_data()
 
     df = df[
         [
@@ -75,6 +66,7 @@ def get_data():
 
     return df
 
+# Rename columns
 def rename_columns():
     df = get_data()
     df = df.rename(columns={"Functional Area": "Career Area", 
@@ -84,6 +76,7 @@ def rename_columns():
                        "General Work Attribute": "General Skill"})
     return df
 
+# Get data for the table
 def get_data_for_job_description_table():
     df = read_data()
     df = df.rename(columns={"Functional Area": "Career Area", 
@@ -93,29 +86,32 @@ def get_data_for_job_description_table():
                        "General Work Attribute": "General Skill"})
     return df
 
+# Get unique skill category
 def get_unique_work_attribute_categories():
     df = get_data()
     return df["Work Attribute Category"].drop_duplicates().sort_values(ascending=False).tolist()
 
-
+# Get unique position level
 def get_unique_decision_making_authorities():
     df = get_data()
     return df["Decision-Making Authority"].drop_duplicates().sort_values(ascending=False).tolist()
 
-
+# Get unique career area
 def get_unique_functional_areas():
     df = get_data()
     return df["Functional Area"].drop_duplicates().sort_values(ascending=False).tolist()
 
+# Get unique special skill
 def get_unique_special_work_attributes(): 
     df = get_data()
     return df["Specific Work Attribute"].drop_duplicates().sort_values(ascending = True)
 
+# Get unique postiton title
 def get_unique_position_titles():
     df = get_data()
     return df['Position Title'].drop_duplicates().sort_values(ascending = True)
 
-
+# Get data to create tree diagram
 def get_network_data(functional_area, decision_making_authority, work_attribute_category):
     df = get_data()
 
@@ -176,7 +172,7 @@ def get_network_data(functional_area, decision_making_authority, work_attribute_
     
     return df
 
-
+# Get data to create bubble chart diagram
 def circle_packing_data(selected_skills):
 
     print("Selected Skills:", selected_skills)
